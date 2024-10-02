@@ -1,5 +1,5 @@
 # Kubernetes-Self-Healing-LoadBalancing
-This project demonstrates the process of setting up a Kubernetes cluster using Minikube and deploying a Spring Boot application based on Docker images to create a service capable of communicating with external resources. It also includes methods for testing load balancing using a load generator and monitoring CPU and memory usage.
+이 프로젝트는 Minikube를 사용하여 Kubernetes 클러스터를 설정하고, Docker 이미지를 기반으로 한 Spring Boot 애플리케이션을 배포하여 클러스터 외부와 통신이 가능한 서비스를 구성합니다. 또한, 부하 생성기를 통해 부하 분산을 테스트하고, CPU 및 메모리 사용량을 모니터링하는 방법을 포함하고 있습니다.
 
 ## 1. Kubernetes를 위한 준비
 
@@ -213,3 +213,28 @@ kubectl top pods
 
 
 ![image](https://github.com/user-attachments/assets/925b66a1-0e92-4272-a404-d59b067e2bb5)
+
+
+![image](https://github.com/user-attachments/assets/361156ed-11c3-43a9-935f-85a997c81bef)
+![image](https://github.com/user-attachments/assets/059ed35d-154a-4151-bb0f-a01571e5bc2f)
+
+
+## 6. Self-Healing
+
+- ### 1. Pod 자동 재시작 (Pod Restart)
+
+Pod는 Kubernetes에서 컨테이너를 실행하는 기본 단위이다. 만약 Pod 내의 컨테이너가 실패하거나 비정상적인 상태로 변경되면, Kubernetes는 자동으로 해당 Pod를 재시작하여 시스템을 복구한다. kubectl get pods 명령어를 통해 확인할 수 있는 RESTARTS 수치는 해당 Pod가 재시작된 횟수를 나타낸다.
+
+예를 들어, restartPolicy가 Always로 설정된 경우, Pod 내의 컨테이너가 비정상적으로 종료되면 Kubernetes가 자동으로 재시작한다.
+
+- ### 2. ReplicaSet & Deployment
+
+ReplicaSet과 Deployment는 여러 개의 동일한 Pod를 관리하는 컨트롤러이다. 특정 Pod가 실패하면, ReplicaSet은 정의된 수의 복제본을 유지하기 위해 자동으로 새로운 Pod를 생성한다. 예를 들어, Deployment에서 3개의 복제본을 설정한 경우, 하나의 Pod가 실패하면 Kubernetes는 새로운 Pod를 생성하여 3개의 복제본이 항상 유지되도록 한다.
+
+- ### loadgenerator가 과부하로 down됐었는데 해당 방식에 의해 바로 다시 살아난 것을 볼 수 있다.
+![image](https://github.com/user-attachments/assets/aa279591-35e4-4e79-b960-1ae991103fa9)
+![image](https://github.com/user-attachments/assets/0ac2e3cb-43cf-4305-b073-118d49d57a2c)
+![image](https://github.com/user-attachments/assets/98b49b6b-9886-49f0-954f-18654e3b94b5)
+
+
+
