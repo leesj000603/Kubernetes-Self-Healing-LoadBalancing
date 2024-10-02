@@ -123,13 +123,93 @@ minikube tunnel
 ![image](https://github.com/user-attachments/assets/1d5f70ef-000a-4273-9b76-c88db715fa26)
 
 
-- ### 클러스터 외부에서 통신이 가능해졌으니 window에서 접속
+- ### 클러스터 외부에서 통신이 가능해졌으니 window에서 접속 해보자
   Windows → VirtualBox → VM → Minikube → Kubernetes Cluster 의 상태이므로
   <br>
-  **1. ubuntu에서 kubernetis에 port forwarding**
-```
-# Kubernetis의 myapp 서비스의 8080 (spring boot) 을 ubuntu 11111포트에 매핑
-kubectl port-forward service/myapp 11111:8080
-```
+  **1. ubuntu vm에서 kubernetis에 port forwarding**
+  ```
+  # Kubernetis의 myapp 서비스의 8080 (spring boot) 을 ubuntu 11111포트에 매핑
+  kubectl port-forward service/myapp 11111:8080
+  ```
+
+  **2. vm들이 사용하는 NAT 네트워크 포트포워딩 설정 1111 : 1111 으로 매핑**
+![image](https://github.com/user-attachments/assets/f36f8af7-2de2-47f0-9402-2406d43694fc)
+  **3. 윈도우에서 접속!**
+![image](https://github.com/user-attachments/assets/6a97bc9f-44a7-4c0e-b131-c9c7a62d5060)
+![image](https://github.com/user-attachments/assets/0bfb4d70-d440-419f-aca3-c8432cdab772)
 
 
+## 4. 부하 분산 여부 확인
+
+```
+# 각 pod들의 로그를 통해 pod들에게 요청이 분산 되었는지 확인
+kubectl logs [podname]
+```
+
+- ### 그러나 분산되지 않음. local에서 요청을 날리는 것 보다 제대로 된 테스트가 필요하다.
+
+## 5. 부하생성기 pod 생성
+
+- ### load-generator.yml
+```
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: load-generator
+spec:
+  replicas: 3  # pod 3개 생성
+  selector:
+    matchLabels:
+      app: load-generator
+  template:
+    metadata:
+      labels:
+        app: load-generator
+    spec:
+      containers:
+      - name: fortio
+        image: fortio/fortio
+        command: ["fortio", "load", "-c", "100", "-n", "1000", "http://10.110.107.181:8080/article1"]  # 원하는 URL로 부하 생성
+
+```
+
+- ### 부하생성기 실행
+```
+# 부하 생성기를 정의한 yml파일 실행함으로써 pod 할당
+kubectl apply -f load-generator.yaml
+```
+![image](https://github.com/user-attachments/assets/253e5ad6-6889-4b54-8ac6-797aaff3ab84)
+
+- 부하생성기가 활동하고,
+- 그에 따라 myapp pod들의 cpu 사용량 증가
+
+
+- ### 부하 분산 여부 확인
+```
+kubectl logs pod/myapp-55f9657889-l5xbf
+
+kubectl logs pod/myapp-55f9657889-9x5m4
+
+kubectl logs pod/myapp-55f9657889-nrdxl
+
+
+각 springboot application pods의 로그 확인
+```
+![image](https://github.com/user-attachments/assets/1b39688a-2f59-48aa-bbdd-d6e05b32fa98)
+
+모든 pod에서 부하생성기에서 정의했던 
+<br>
+command: ["fortio", "load", "-c", "100", "-n", "1000", "http://10.110.107.181:8080/article1"] 에 따라
+<br>
+article1에 대한 get요청이 날아가고 있음을 확인했다. 다만 엄청난 양의 요청으로 인해 사진으로 구분이 불가능할 뿐 
+<br>
+모든 pod에 요청이 나눠서 가고 있다.
+
+```
+# pod들의 부하 확인
+kubectl top pods
+```
+![image](https://github.com/user-attachments/assets/2d156e20-b192-41cc-88ff-415ef43c706b)
+
+
+![image](https://github.com/user-attachments/assets/925b66a1-0e92-4272-a404-d59b067e2bb5)
