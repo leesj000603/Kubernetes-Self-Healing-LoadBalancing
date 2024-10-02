@@ -1,5 +1,8 @@
 # Kubernetes-Self-Healing-LoadBalancing
+![image](https://github.com/user-attachments/assets/8ea679f8-fe57-40b5-a12f-055a19a43331)
+
 이 프로젝트는 Minikube를 사용하여 Kubernetes 클러스터를 설정하고, Docker 이미지를 기반으로 한 Spring Boot 애플리케이션을 배포하여 클러스터 외부와 통신이 가능한 서비스를 구성한다. 또한, 부하 생성기를 통해 부하 분산을 테스트하고, CPU 및 메모리 사용량을 모니터링하는 방법을 포함하고 있다.
+
 
 ## 1. Kubernetes를 위한 준비
 
