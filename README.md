@@ -138,6 +138,7 @@ minikube tunnel
 ![image](https://github.com/user-attachments/assets/6a97bc9f-44a7-4c0e-b131-c9c7a62d5060)
 ![image](https://github.com/user-attachments/assets/0bfb4d70-d440-419f-aca3-c8432cdab772)
 
+---
 
 ## 4. 부하 분산 여부 확인
 
@@ -147,6 +148,8 @@ kubectl logs [podname]
 ```
 
 - ### 그러나 분산되지 않음. local에서 요청을 날리는 것 보다 제대로 된 테스트가 필요하다.
+  
+---
 
 ## 5. 부하생성기 pod 생성
 
@@ -218,6 +221,7 @@ kubectl top pods
 ![image](https://github.com/user-attachments/assets/361156ed-11c3-43a9-935f-85a997c81bef)
 ![image](https://github.com/user-attachments/assets/059ed35d-154a-4151-bb0f-a01571e5bc2f)
 
+---
 
 ## 6. Self-Healing
 
