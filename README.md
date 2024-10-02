@@ -129,7 +129,7 @@ minikube tunnel
 - ### 클러스터 외부에서 통신이 가능해졌으니 window에서 접속 해보자
   Windows → VirtualBox → VM → Minikube → Kubernetes Cluster 의 상태이므로
   <br>
-  **1. ubuntu vm에서 kubernetis에 port forwarding**
+  **1. ubuntu vm, kubernetis port forwarding**
   ```
   # Kubernetis의 myapp 서비스의 8080 (spring boot) 을 ubuntu 11111포트에 매핑
   kubectl port-forward service/myapp 11111:8080
