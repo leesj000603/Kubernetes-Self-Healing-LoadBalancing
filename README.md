@@ -140,21 +140,10 @@ minikube tunnel
   **3. 윈도우에서 접속!**
 ![image](https://github.com/user-attachments/assets/6a97bc9f-44a7-4c0e-b131-c9c7a62d5060)
 ![image](https://github.com/user-attachments/assets/0bfb4d70-d440-419f-aca3-c8432cdab772)
-
----
-
-## 4. 부하 분산 여부 확인
-
-```
-# 각 pod들의 로그를 통해 pod들에게 요청이 분산 되었는지 확인
-kubectl logs [podname]
-```
-
-- ### 그러나 분산되지 않음. local에서 요청을 날리는 것 보다 제대로 된 테스트가 필요하다.
   
 ---
 
-## 5. 부하생성기 deployment 생성
+## 4. 부하생성기 deployment 생성
 
 - ### load-generator.yml
 ```
@@ -178,6 +167,38 @@ spec:
         command: ["fortio", "load", "-c", "100", "-n", "1000", "http://10.110.107.181:8080/article1"]  # 원하는 URL로 부하 생성
 
 ```
+### 주요 요소 설명
+- replicas:
+  3개의 Pod를 생성하여 부하를 동시에 발생시킨다는 의미이다. 이 설정으로 인해 각 Pod가 지정된 부하 테스트를 병렬로 실행할 수 있다.
+- selector:
+  matchLabels를 통해 이 Deployment가 생성한 Pod를 찾는 기준이 되는 레이블을 정의한다. 이 레이블은 app: load-generator이다.
+- template:
+  template 아래에 Pod의 구성을 정의한다. 이 섹션은 Pod의 메타데이터와 스펙을 포함한다.
+  - containers:
+  Fortio 이미지를 사용하여 부하 생성기를 설정한다. fortio 컨테이너는 Fortio를 실행하며, 지정된 명령으로 요청을 보낸다.
+  - command: ["fortio", "load", "-c", "100", "-n", "1000", "http://10.110.107.181:8080/article1"]는 Fortio에 다음과 같은 파라미터를 전달한다:
+    -c 100: 동시 연결 수를 100으로 설정한다.
+    -n 1000: 총 1000개의 요청을 보낸다.
+    - http://10.110.107.181:8080/article1: 부하를 생성할 URL이다.
+      - 10.110.107.181은 로드밸런서 서비스의 외부 IP
+      - 8080은 Spring application의 port에 해당한다.
+      - /article1은 1번 기사를 조회하는 명령이다.
+   
+
+
+### 부하 분산의 원리
+- 이 구성에서 부하 생성기 Pod가 3개 생성되므로, 각 Pod가 독립적으로 요청을 보내게 돤다.
+  다음과 같은 요청 패턴이 형성된다:
+
+  - Pod 1: 첫 100개의 요청
+  - Pod 2: 다음 100개의 요청
+  - Pod 3: 마지막 100개의 요청
+  <br>
+  
+  **이렇게 각 Pod가 다른 요청을 동시에 발생시키므로, 전체적으로 로드 밸런서에 전달되는 요청이 분산돤다.**
+
+    
+
 
 - ### 부하생성기 실행
 ```
@@ -226,7 +247,7 @@ kubectl top pods
 
 ---
 
-## 6. Self-Healing
+## 5. Self-Healing
 
 - ### 1. Pod 자동 재시작 (Pod Restart)
 
