@@ -154,7 +154,7 @@ kubectl logs [podname]
   
 ---
 
-## 5. 부하생성기 pod 생성
+## 5. 부하생성기 deployment 생성
 
 - ### load-generator.yml
 ```
@@ -181,8 +181,8 @@ spec:
 
 - ### 부하생성기 실행
 ```
-# 부하 생성기를 정의한 yml파일 실행함으로써 pod 할당
-kubectl apply -f load-generator.yaml
+# 부하 생성기를 정의한 yml파일 실행함으로써 3개의 pod를 관리하는  deployment 생성
+kubectl apply -f load-generator.yml
 ```
 ![image](https://github.com/user-attachments/assets/253e5ad6-6889-4b54-8ac6-797aaff3ab84)
 
