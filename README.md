@@ -135,7 +135,7 @@ minikube tunnel
   kubectl port-forward service/myapp 11111:8080
   ```
 
-  **2. vm들이 사용하는 NAT 네트워크 포트포워딩 설정 1111 : 1111 으로 매핑**
+  **2. vm들이 사용하는 NAT 네트워크 포트포워딩 설정 11111 : 11111 으로 매핑**
 ![image](https://github.com/user-attachments/assets/f36f8af7-2de2-47f0-9402-2406d43694fc)
   **3. 윈도우에서 접속!**
 ![image](https://github.com/user-attachments/assets/6a97bc9f-44a7-4c0e-b131-c9c7a62d5060)
