@@ -1,6 +1,8 @@
 # Kubernetes-Self-Healing-LoadBalancing
 ![image](https://github.com/user-attachments/assets/8ea679f8-fe57-40b5-a12f-055a19a43331)
 
+<img src="https://img.shields.io/badge/Kubernetes-326CE5?style=for-the-badge&logo=kubernetes&logoColor=white"/> <img src="https://img.shields.io/badge/Springboot-6DB33F?style=for-the-badge&logo=Springboot&logoColor=white"/> <img src="https://img.shields.io/badge/Thymeleaf-005F0F?style=for-the-badge&logo=thymeleaf&logoColor=white"/> <img src="https://img.shields.io/badge/VirtualBox-183A61?logo=virtualbox&logoColor=white&style=for-the-badge"/>  <img src="https://img.shields.io/badge/Ubuntu-E95420?style=for-the-badge&logo=ubuntu&logoColor=white"/>
+
 이 프로젝트는 Minikube를 사용하여 로컬 환경에서 단일 노드 Kubernetes 클러스터를 설정하고, Docker 이미지를 기반으로 한 Spring Boot 애플리케이션을 3개의 pod로 배포하여 클러스터 외부와 통신할 수 있는 부하 분산 서비스를 구성하였다. 또한, 부하 생성기를 사용해 부하 분산 성능을 테스트하고, CPU 및 메모리 사용량을 모니터링하였다.
 
 ## 1. Kubernetes를 위한 준비
