@@ -113,7 +113,7 @@ minikube addons enable metrics-server
 ![image](https://github.com/user-attachments/assets/321a9129-b050-4b14-a4d0-6542ead32d5b)
 
 
-- ### myapp이라는 이름의 Deployment를 Service로 외부에 노출 하도록 한다. 또한 생성되는 서비스의 유형을 LoadBalancer로 설정 - 이를 통해 해당 Service를 통해 들어오는 트래픽을 3개의 pod에 분산하게 된다.
+- ### myapp이라는 이름의 Deployment를 Service로 외부에 노출한다. 또한 생성되는 서비스의 유형을 LoadBalancer로 설정 - 이를 통해 해당 Service를 통해 들어오는 트래픽을 3개의 pod에 분산하게 된다.
 ```
 kubectl expose deployment myapp --type=LoadBalancer --port=8080
 ```
